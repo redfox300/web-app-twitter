@@ -1,8 +1,18 @@
-var spawn = require('child_process').spawn;
+"use strict";
 
-spawn('twitter-proxy');
-spawn('http-server');
+const fs = require('fs');
+const twitterProxyServer = require('twitter-proxy');
+const proxyConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+const serveHandler = require('serve-handler');
+const http = require('http');
 
-console.log('Server running on http://localhost:8080');
-console.log('Request the Twitter API using: http://localhost:7890/1.1/statuses/user_timeline.json\?count\=30\&screen_name\=appdirect');
+//Initialises twitter proxy using parameters in config.json
+twitterProxyServer(proxyConfig);
 
+const server = http.createServer((request, response) => {
+    return serveHandler(request,response);
+});
+
+server.listen(8080, () => {
+    console.log('Server running on http://localhost:8080');
+});
