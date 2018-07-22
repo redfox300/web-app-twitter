@@ -34,13 +34,13 @@ const TweetText = (props) => {
     }
 
     //Replace Hyperlinks
-    text = text.replace(/(https?:\/\/[^ ]+)/g, '<a href="$1" >$1</a>');
+    text = text.replace(/(https?:\/\/[^ ]+)/g, '<a href="$1" target="_blank">$1</a>');
 
     //Replace Mentions
-    text = text.replace(/(@[^ ]+)/g, '<a href="http://twitter.com/$1">$1</a>');
+    text = text.replace(/(@[^ ]+)/g, '<a href="http://twitter.com/$1" target="_blank">$1</a>');
 
     //Rplace Hashtags, there is a second pass with replace to remove # from url in <a> tag.
-    text = text.replace(/(#[^ ]+)/g, '<a href="http://twitter.com/hashtag/$1">$1</a>');
+    text = text.replace(/(#[^ ]+)/g, '<a href="http://twitter.com/hashtag/$1" target="_blank">$1</a>');
     text = text.replace(/(\/#)/g,'/');
 
     //Set the modified tweet text parameter as inner html to a <p>
