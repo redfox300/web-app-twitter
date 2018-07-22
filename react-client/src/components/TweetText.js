@@ -18,9 +18,19 @@ const TweetText = (props) => {
     if(props.tweet.truncated){
         text = props.tweet.text.split(/…/g)[0]+"…";
     }else{
+        //Deal with non-truncated tweets
         //Matches on web urls like twitter's https://t.co/
-        const regex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})$/
-        text = props.tweet.text.replace(regex, '');
+        const matchURL = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/g;
+
+        let result = (props.tweet.text.match(matchURL) || []);
+
+        // Remove last url if more than one is found in the original text
+        if(result.length >= 2){
+            text = props.tweet.text.replace(result[result.length - 1], '');
+        } else{
+            text = props.tweet.text;
+        }
+
     }
 
     //Replace Hyperlinks
