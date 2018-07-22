@@ -63,7 +63,7 @@ const Tweet = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item>
-                                <a href={props.tweet.entities.urls[0].url} target={"_blank"}>
+                                <a href={props.tweet.entities.urls[props.tweet.entities.urls.length - 1].url} target={"_blank"}>
                                     <Button variant={"contained"} size="small" color="primary">
                                         View on Twitter
                                     </Button>
