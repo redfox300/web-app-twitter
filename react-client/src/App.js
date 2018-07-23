@@ -5,6 +5,7 @@ import './App.css'
 import NavBar from './components/NavBar'
 import Column from './components/Column'
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
+import ScrollToTopFAB from './components/ScrollToTopFAB'
 
 class App extends Component {
     constructor(props){
@@ -19,8 +20,27 @@ class App extends Component {
         this.setState({ activeTabValue: value});
     };
 
+    scrollToTop = () => {
+        let doc = document.documentElement;
+        let top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+
+        //Incremental scroll based on distance from top
+        if(top > 5000){
+            window.scrollTo(0, top - 200);
+            setTimeout(this.scrollToTop, 4);
+        }else if (top > 1500) {
+            window.scrollTo(0, top - 100);
+            setTimeout(this.scrollToTop, 4);
+        }else if (top > 300) {
+            window.scrollTo(0, top - 30);
+            setTimeout(this.scrollToTop, 4);
+        }else if(top > 0){
+            window.scrollTo(0, top - 10);
+            setTimeout(this.scrollToTop, 4);
+        }
+    };
+
     render() {
-        console.log(this.props.width);
         if(isWidthUp('lg', this.props.width)){
             return (
                 <React.Fragment>
@@ -41,6 +61,7 @@ class App extends Component {
                             </Grid>
                         </Grid>
                     </Grid>
+                    <ScrollToTopFAB handleClick={this.scrollToTop} />
                 </React.Fragment>
             );
         } else {
@@ -55,6 +76,7 @@ class App extends Component {
                             {this.state.activeTabValue === 2 && <Column screenName={this.state.names[2]}/>}
                         </Grid>
                     </Grid>
+                    <ScrollToTopFAB mini={true} handleClick={this.scrollToTop}/>
                 </React.Fragment>
             );
         }
