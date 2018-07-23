@@ -8,7 +8,7 @@ import Tab from '@material-ui/core/Tab';
 const NavBar = (props) => {
     return(
         <div>
-            <AppBar position="static" color={"primary"}>
+            <AppBar position={"fixed"} color={"primary"}>
                 <Toolbar>
                     <Typography variant="title" color="inherit">
                         Twitter Tweet Viewer

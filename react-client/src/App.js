@@ -26,7 +26,7 @@ class App extends Component {
                 <React.Fragment>
                     <CssBaseline />
                     <NavBar />
-                    <Grid container alignItems={"center"} direction={"column"} justify={"center"}>
+                    <Grid container alignItems={"center"} direction={"column"} justify={"center"} style={{paddingTop: 64}}>
                         <Grid item>
                             <Grid container alignItems={"flex-start"} justify={"center"} direction={"row"}>
                                 <Grid item>
@@ -48,7 +48,7 @@ class App extends Component {
                 <React.Fragment>
                     <CssBaseline />
                     <NavBar tabs={{state: this.state, onChange: this.handleTabChange}}/>
-                    <Grid container alignItems={"center"} justify={"center"}>
+                    <Grid container alignItems={"center"} justify={"center"} style={{paddingTop: 104}}>
                         <Grid item>
                             {this.state.activeTabValue === 0 && <Column screenName={this.state.names[0]}/>}
                             {this.state.activeTabValue === 1 && <Column screenName={this.state.names[1]}/>}
