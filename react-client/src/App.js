@@ -12,12 +12,18 @@ class App extends Component {
         super(props);
         this.state = {
             activeTabValue : 0,
-            names : ["appdirect", "techcrunch", "laughingsquid"]
+            names : ["appdirect", "techcrunch", "laughingsquid"],
+            nbOfTweets: 30,
+            palette: 'primary'
         }
     }
 
     handleTabChange = (event, value) => {
         this.setState({ activeTabValue: value});
+    };
+
+    handleLayoutChange = (newNames, newNbOfTweets, newPalette) => {
+        this.setState({names: newNames, nbOfTweets: newNbOfTweets, palette: newPalette});
     };
 
     scrollToTop = () => {
@@ -45,18 +51,21 @@ class App extends Component {
             return (
                 <React.Fragment>
                     <CssBaseline />
-                    <NavBar />
+                    <NavBar
+                        layout={{palette: this.state.palette, names: this.state.names, nbOfTweets: this.state.nbOfTweets}}
+                        handleLayoutChange={this.handleLayoutChange}
+                    />
                     <Grid container alignItems={"center"} direction={"column"} justify={"center"} style={{paddingTop: 64}}>
                         <Grid item>
                             <Grid container alignItems={"flex-start"} justify={"center"} direction={"row"}>
                                 <Grid item>
-                                    <Column screenName={this.state.names[0]}/>
+                                    <Column screenName={this.state.names[0]} count={this.state.nbOfTweets}/>
                                 </Grid>
                                 <Grid item>
-                                    <Column screenName={this.state.names[1]}/>
+                                    <Column screenName={this.state.names[1]} count={this.state.nbOfTweets}/>
                                 </Grid>
                                 <Grid item>
-                                    <Column screenName={this.state.names[2]}/>
+                                    <Column screenName={this.state.names[2]} count={this.state.nbOfTweets}/>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -68,19 +77,23 @@ class App extends Component {
             return(
                 <React.Fragment>
                     <CssBaseline />
-                    <NavBar tabs={{state: this.state, onChange: this.handleTabChange}}/>
+                    <NavBar
+                        tabs={{state: this.state, onChange: this.handleTabChange}}
+                        layout={{palette: this.state.palette, names: this.state.names, nbOfTweets: this.state.nbOfTweets}}
+                        handleLayoutChange={this.handleLayoutChange}
+                    />
                     <Grid container alignItems={"center"} justify={"center"} style={{paddingTop: 104}}>
                         <Grid item>
-                            {this.state.activeTabValue === 0 && <Column screenName={this.state.names[0]}/>}
-                            {this.state.activeTabValue === 1 && <Column screenName={this.state.names[1]}/>}
-                            {this.state.activeTabValue === 2 && <Column screenName={this.state.names[2]}/>}
+                            {this.state.activeTabValue === 0 && <Column screenName={this.state.names[0]} count={this.state.nbOfTweets}/>}
+                            {this.state.activeTabValue === 1 && <Column screenName={this.state.names[1]} count={this.state.nbOfTweets}/>}
+                            {this.state.activeTabValue === 2 && <Column screenName={this.state.names[2]} count={this.state.nbOfTweets}/>}
                         </Grid>
                     </Grid>
                     <ScrollToTopFAB mini={true} handleClick={this.scrollToTop}/>
                 </React.Fragment>
             );
         }
-    }
+    };
 }
 
 export default withWidth()(App);

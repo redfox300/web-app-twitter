@@ -17,13 +17,18 @@ class Column extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            screenName : props.screenName,
             tweets: null
         }
     }
     componentWillMount(){
         //Fetch tweets from proxy and set them in component state
-        twitterProxy.getBatchOfTweets(this.state.screenName).then((data)=> this.setState({tweets : data}));
+        twitterProxy.getBatchOfTweets(this.props.screenName, this.props.count).then((data)=> this.setState({tweets : data}));
+    }
+    componentDidUpdate(prevProps){
+        //Check if props have changed; fetch data again on change
+        if(this.props.screenName !== prevProps.screenName || this.props.count !== prevProps.count){
+            twitterProxy.getBatchOfTweets(this.props.screenName, this.props.count).then((data)=> this.setState({tweets : data}));
+        }
     }
     render(){
         const { classes } = this.props;
