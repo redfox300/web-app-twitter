@@ -46,7 +46,7 @@ class Column extends React.Component {
                             }
                             return(
                                 <ListItem key={tweet.id_str} className={classes.tweetElement}>
-                                    <Tweet tweet={myTweet}/>
+                                    <Tweet tweet={myTweet} palette={this.props.palette}/>
                                 </ListItem>
                             )
                         })}

@@ -59,13 +59,25 @@ class App extends Component {
                         <Grid item>
                             <Grid container alignItems={"flex-start"} justify={"center"} direction={"row"}>
                                 <Grid item>
-                                    <Column screenName={this.state.names[0]} count={this.state.nbOfTweets}/>
+                                    <Column
+                                        screenName={this.state.names[0]}
+                                        count={this.state.nbOfTweets}
+                                        palette={this.state.palette}
+                                    />
                                 </Grid>
                                 <Grid item>
-                                    <Column screenName={this.state.names[1]} count={this.state.nbOfTweets}/>
+                                    <Column
+                                        screenName={this.state.names[1]}
+                                        count={this.state.nbOfTweets}
+                                        palette={this.state.palette}
+                                    />
                                 </Grid>
                                 <Grid item>
-                                    <Column screenName={this.state.names[2]} count={this.state.nbOfTweets}/>
+                                    <Column
+                                        screenName={this.state.names[2]}
+                                        count={this.state.nbOfTweets}
+                                        palette={this.state.palette}
+                                    />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -84,9 +96,24 @@ class App extends Component {
                     />
                     <Grid container alignItems={"center"} justify={"center"} style={{paddingTop: 104}}>
                         <Grid item>
-                            {this.state.activeTabValue === 0 && <Column screenName={this.state.names[0]} count={this.state.nbOfTweets}/>}
-                            {this.state.activeTabValue === 1 && <Column screenName={this.state.names[1]} count={this.state.nbOfTweets}/>}
-                            {this.state.activeTabValue === 2 && <Column screenName={this.state.names[2]} count={this.state.nbOfTweets}/>}
+                            {this.state.activeTabValue === 0 &&
+                                <Column
+                                    screenName={this.state.names[0]}
+                                    count={this.state.nbOfTweets}
+                                    palette={this.state.palette}
+                                />}
+                            {this.state.activeTabValue === 1 &&
+                                <Column
+                                    screenName={this.state.names[1]}
+                                    count={this.state.nbOfTweets}
+                                    palette={this.state.palette}
+                                />}
+                            {this.state.activeTabValue === 2 &&
+                                <Column
+                                    screenName={this.state.names[2]}
+                                    count={this.state.nbOfTweets}
+                                    palette={this.state.palette}
+                                />}
                         </Grid>
                     </Grid>
                     <ScrollToTopFAB mini={true} handleClick={this.scrollToTop}/>

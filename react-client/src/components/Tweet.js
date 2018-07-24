@@ -64,7 +64,7 @@ const Tweet = (props) => {
                             </Grid>
                             <Grid item>
                                 <a href={`https://www.twitter.com/statuses/${props.tweet.id_str}`} target={"_blank"}>
-                                    <Button variant={"contained"} size="small" color="primary">
+                                    <Button variant={"contained"} size="small" color={props.palette}>
                                         View on Twitter
                                     </Button>
                                 </a>

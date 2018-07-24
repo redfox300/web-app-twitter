@@ -9,7 +9,7 @@ import EditLayout from './EditLayout'
 const NavBar = (props) => {
     return(
         <div>
-            <AppBar position={"fixed"} color={"primary"}>
+            <AppBar position={"fixed"} color={props.layout.palette}>
                 <Toolbar>
                     <Typography variant="title" color="inherit" style={{flexGrow:1}}>
                         Twitter Tweet Viewer
