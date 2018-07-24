@@ -10,13 +10,23 @@ import ScrollToTopFAB from './components/ScrollToTopFAB'
 class App extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            activeTabValue : 0,
-            names : ["appdirect", "techcrunch", "laughingsquid"],
-            nbOfTweets: 30,
-            palette: 'primary'
+        let storage = JSON.parse(localStorage.getItem('twitterTweetViewer'));
+        if(storage != null){
+            this.state = storage;
+        }else{
+            this.state = {
+                activeTabValue : 0,
+                names : ["appdirect", "techcrunch", "laughingsquid"],
+                nbOfTweets: 30,
+                palette: 'primary'
+            }
         }
     }
+
+    componentDidUpdate = () => {
+        //Set state in broswer local storage on update
+        localStorage.setItem('twitterTweetViewer', JSON.stringify(this.state));
+    };
 
     handleTabChange = (event, value) => {
         this.setState({ activeTabValue: value});
