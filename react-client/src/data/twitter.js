@@ -15,4 +15,27 @@ function getBatchOfTweets(user,amount = 30) {
         return response.json().then(data => {return data});
     });
 }
-export { getSingleTweetById, getBatchOfTweets };
+
+function doesUserExist(user) {
+    return fetch(`http://localhost:7890/1.1/users/show.json?screen_name=${user}`)
+        .then(function(response) {
+            if(!response.ok){
+                if(response.status === 404){
+                    response.json().then(function (data) {
+                        if(data.errors && data.errors[0].code === 50){
+                            return false;
+                        } else throw(new Error(response.status || response.statusText));
+                    });
+                } else {
+                    throw(new Error(response.status || response.statusText));
+                }
+            }
+            else {
+                return true;
+            }
+        })
+        .catch(function (error) {
+            console.log('Checking if user exists failed with '+error.message);
+        });
+}
+export { getSingleTweetById, getBatchOfTweets, doesUserExist };

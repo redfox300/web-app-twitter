@@ -16,6 +16,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Typography from '@material-ui/core/Typography'
 import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
+import * as twitterProxy from './../data/twitter'
+import update from 'immutability-helper';
 
 const styles = (theme) => ({
     radio: {
@@ -32,18 +34,19 @@ const styles = (theme) => ({
 class EditLayout extends React.Component {
     constructor(props){
         super(props);
-        //Keep a copy of original values from props
+        //Keep a copy of original prop values using originalValues
         this.state = {
             open: false,
+            textFieldHasError: Array(3).fill(false),
+            textFieldHelpText: Array(3).fill(''),
             originalValues: {
                 palette: props.defaults.palette,
                 nbOfTweets: props.defaults.nbOfTweets,
-                column1: props.defaults.names[0],
-                column2: props.defaults.names[1],
-                column3: props.defaults.names[2]
+                columns: props.defaults.names
             }
         };
-        this.state.values = this.state.originalValues;
+        //Need deep copy of originalValues
+        this.state.values = JSON.parse(JSON.stringify(this.state.originalValues));
     }
 
     //If incoming props are different, update originalValues
@@ -52,9 +55,7 @@ class EditLayout extends React.Component {
             let newDefaults = {
                 palette: nextProps.defaults.palette,
                 nbOfTweets: nextProps.defaults.nbOfTweets,
-                column1: nextProps.defaults.names[0],
-                column2: nextProps.defaults.names[1],
-                column3: nextProps.defaults.names[2]
+                columns: nextProps.defaults.names
             };
             this.setState({originalValues: newDefaults});
         }
@@ -66,22 +67,60 @@ class EditLayout extends React.Component {
 
     handleClose = () => {
         //Reset fields to original values when changes are not saved
-        this.setState({ open: false , values: this.state.originalValues});
+        this.setState({
+            open: false ,
+            textFieldHasError: Array(3).fill(false),
+            textFieldHelpText: Array(3).fill(''),
+            values: JSON.parse(JSON.stringify(this.state.originalValues))});
+    };
+
+    checkIfColumnValid = (index) => {
+        //only run check if current values differ from saved defaults
+        if(this.state.originalValues.columns[index] !== this.state.values.columns[index]){
+            twitterProxy.doesUserExist(this.state.values.columns[index])
+                .then((exists)=>{
+                    if(exists){
+                        this.setState((prevState) => ({
+                            textFieldHasError: update(prevState.textFieldHasError, {[index]:{$set:false}}),
+                            textFieldHelpText: update(prevState.textFieldHelpText, {[index]:{$set:''}})
+                        }));
+                    }else{
+                        this.setState((prevState) => ({
+                            textFieldHasError: update(prevState.textFieldHasError, {[index]:{$set:true}}),
+                            textFieldHelpText: update(prevState.textFieldHelpText, {[index]:{$set:"User doesn't exist"}})
+                        }));
+                    }
+                });
+        }else if(this.state.textFieldHasError[index]){
+            //if text matches but an error flag is found, reset it
+            this.setState((prevState) => ({
+                textFieldHasError: update(prevState.textFieldHasError, {[index]:{$set:false}}),
+                textFieldHelpText: update(prevState.textFieldHelpText, {[index]:{$set:''}})
+            }));
+        }
     };
 
     handleSubmit = (event) => {
-        //Call handleLayoutChange to set state in App component
-        let names = [this.state.values.column1, this.state.values.column2, this.state.values.column3]
-        this.props.handleLayoutChange(names, this.state.values.nbOfTweets, this.state.values.palette);
         event.preventDefault();
-        this.setState({open: false});
+        //Only send new values back to parent if no error flags found, else do nothing
+        if(!this.state.textFieldHasError.includes(true)){
+            //Call handleLayoutChange to set state in App component
+            this.props.handleLayoutChange(JSON.parse(JSON.stringify(this.state.values.columns)), this.state.values.nbOfTweets, this.state.values.palette);
+            this.setState({open: false});
+        }
     };
 
-    handleChange = name => event => {
+    handleChange = (name, index) => event => {
         //Used to set inner state
-        let values = {...this.state.values};
-        values[name] = event.target.value;
-        this.setState({values});
+        let newValues = {...this.state.values};
+        if(index != null){
+            //if index is provided then the change is for a column textfield, check validity
+            newValues[name][index]= event.target.value;
+            this.checkIfColumnValid(index);
+        }else{
+            newValues[name] = event.target.value;
+        }
+        this.setState({values: newValues});
     };
 
 
@@ -112,22 +151,28 @@ class EditLayout extends React.Component {
                                     <div className={classes.timelines}>
                                         <TextField
                                             required
-                                            value={this.state.values.column1}
-                                            onChange={this.handleChange('column1')}
+                                            error={this.state.textFieldHasError[0]}
+                                            helperText={this.state.textFieldHelpText[0]}
+                                            value={this.state.values.columns[0]}
+                                            onChange={this.handleChange('columns',0)}
                                             margin={"none"}
                                             className={classes.text}
                                         />
                                         <TextField
                                             required
-                                            value={this.state.values.column2}
-                                            onChange={this.handleChange('column2')}
+                                            error={this.state.textFieldHasError[1]}
+                                            helperText={this.state.textFieldHelpText[1]}
+                                            value={this.state.values.columns[1]}
+                                            onChange={this.handleChange('columns',1)}
                                             margin={"none"}
                                             className={classes.text}
                                         />
                                         <TextField
                                             required
-                                            value={this.state.values.column3}
-                                            onChange={this.handleChange('column3')}
+                                            error={this.state.textFieldHasError[2]}
+                                            helperText={this.state.textFieldHelpText[2]}
+                                            value={this.state.values.columns[2]}
+                                            onChange={this.handleChange('columns',2)}
                                             margin={"none"}
                                             className={classes.text}
                                         />
