@@ -10,7 +10,7 @@ const http = require('http');
 twitterProxyServer(proxyConfig);
 
 const server = http.createServer((request, response) => {
-    return serveHandler(request,response);
+    return serveHandler(request,response, {"public":"react-client/build"});
 });
 
 server.listen(8080, () => {
