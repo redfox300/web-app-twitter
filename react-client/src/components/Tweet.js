@@ -38,6 +38,7 @@ const Tweet = (props) => {
         <Paper className={classes.tweet}>
             <Grid container alignItems={"center"}>
                 <Grid item>
+                    {/*if no profile image is found, provide a default*/}
                     {(props.tweet.user.profile_image_url ?
                         <Avatar className={classes.avatar} src={props.tweet.user.profile_image_url} />
                         : <Avatar className={classes.avatar} src={"/people.ico"}/>)}

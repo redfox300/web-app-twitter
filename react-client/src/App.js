@@ -10,6 +10,7 @@ import ScrollToTopFAB from './components/ScrollToTopFAB'
 class App extends Component {
     constructor(props){
         super(props);
+        //Load layout settings from local storage if any found
         let storage = JSON.parse(localStorage.getItem('twitterTweetViewer'));
         if(storage != null){
             this.state = storage;
@@ -24,7 +25,7 @@ class App extends Component {
     }
 
     componentDidUpdate = () => {
-        //Set state in broswer local storage on update
+        //Set state in browser local storage on update
         localStorage.setItem('twitterTweetViewer', JSON.stringify(this.state));
     };
 
@@ -57,6 +58,7 @@ class App extends Component {
     };
 
     render() {
+        //Different render trees based on screen width
         if(isWidthUp('lg', this.props.width)){
             return (
                 <React.Fragment>

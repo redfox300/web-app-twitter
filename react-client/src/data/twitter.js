@@ -17,12 +17,15 @@ function getBatchOfTweets(user,amount = 30) {
 }
 
 function doesUserExist(user) {
-    return fetch(`http://localhost:7890/1.1/users/show.json?screen_name=${user}`)
+    return fetch(`${API_PROXY}/users/show.json?screen_name=${user}`)
         .then(function(response) {
+            //If response is a 404 with json body with code 50, the user does not exist.
+            //other non 200 responses treated as errors
             if(!response.ok){
                 if(response.status === 404){
                     response.json().then(function (data) {
                         if(data.errors && data.errors[0].code === 50){
+                            //User does not exist
                             return false;
                         } else throw(new Error(response.status || response.statusText));
                     });
@@ -31,6 +34,7 @@ function doesUserExist(user) {
                 }
             }
             else {
+                //User exists
                 return true;
             }
         })

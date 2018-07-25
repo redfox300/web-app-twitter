@@ -22,9 +22,6 @@ const NavBar = (props) => {
                         }}
                         handleLayoutChange={props.handleLayoutChange}
                     />
-                    {/*<IconButton color={"inherit"}>*/}
-                        {/*<EditIcon/>*/}
-                    {/*</IconButton>*/}
                 </Toolbar>
                 {(props.tabs ?
                 (<Tabs value={props.tabs.state.activeTabValue} onChange={props.tabs.onChange} fullWidth>

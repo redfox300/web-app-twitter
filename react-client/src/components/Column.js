@@ -20,7 +20,7 @@ class Column extends React.Component {
             tweets: null
         }
     }
-    componentWillMount(){
+    componentDidMount(){
         //Fetch tweets from proxy and set them in component state
         twitterProxy.getBatchOfTweets(this.props.screenName, this.props.count).then((data)=> this.setState({tweets : data}));
     }
