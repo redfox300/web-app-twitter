@@ -33,9 +33,3 @@ Navigate to `/react-client` and run `npm run build` to generate the static files
 To start the http server and proxy server use `npm start` at the root of the project.
 
 The http server will server the static files under `react-client/build` at http://localhost:8080
-
-## Live Demo
-
-A copy of this application is deployed on an AWS EC2 instance and can be viewed at the following url: 
-
-http://ec2-18-222-130-124.us-east-2.compute.amazonaws.com
